@@ -1,19 +1,25 @@
-GitPags https://professorricson.github.io/ads3_manha3/
+**PI_AMAS**
 
-Este projeto é um sistema de cadastro para a APAE (Associação de Pais e Amigos dos Excepcionais) que permite o gerenciamento de funcionários e pacientes. O sistema possui funcionalidades completas de CRUD (Create, Read, Update, Delete) para ambos os tipos de registros.
+- Este projeto tem como objetivo criar um website para a Associação AMASLGBTQ+ a qual busca promover cidadanía a população LGBTQIAPN+ da região Mata Sul Pernambucana
 
-Funcionalidades
-Cadastro de Funcionários
-Criar: Adicionar novos funcionários ao sistema.
-Ler: Consultar informações de funcionários cadastrados.
-Atualizar: Modificar informações de funcionários existentes.
-Excluir: Remover funcionários do sistema.
-Cadastro de Pacientes
-Criar: Adicionar novos pacientes ao sistema.
-Ler: Consultar informações de pacientes cadastrados.
-Atualizar: Modificar informações de pacientes existentes.
-Excluir: Remover pacientes do sistema.
-Tecnologias Utilizadas
-Front-end: HTML, CSS, JavaScript
-Back-end: -
-Banco de Dados: -
+**Estrutura do Projeto - Descrição dos Arquivos**
+
+- index.html: Página principal do site.
+- aAssociacao.html: Página com informações sobre a associação.
+- acoes.html: Página detalhando as ações da associação.
+- contatos.html: Página com informações de contato.
+- denuncie.html: Página para denúncias e direciona para o app Rugido.
+- equipe.html: Página com informações sobre a equipe.
+- parceiros.html: Página com informações sobre os parceiros.
+- javaS.js e script.js: Arquivos JavaScript para funcionalidades do site.
+- style.css: Arquivo CSS para estilização do site.
+- imgs/: Diretório contendo imagens usadas no site.
+- .git/: Diretório de configuração e histórico do Git.
+
+**Tecnologias Utilizadas**
+
+- HTML5
+- CSS3
+- JavaScript
+
+**Este projeto foi desenvolvido como parte de uma avaliação final da disciplina "Projeto Integrador III" do curso de Análise e Desenvolvimento de Sistemas pelo IFPE - Palmares.**

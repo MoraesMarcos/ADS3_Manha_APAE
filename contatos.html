@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="javaS.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <title>AMAS LGBTQI+</title>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script src="script.js"></script>
+<script type="text/javascript">
+(function(){
+    emailjs.init({
+        publicKey: "zg4R1R_BP4fiRyTgk",
+    });
+})();
+</script>
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container-menu">
+            <div class="logo">
+                <img src="imgs/logoSemfundo.png" alt="AMAS LGBT">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="aAssociacao.html">A Associação</a></li>
+                    <li><a href="acoes.html">Ações</a></li>
+                    <li><a href="datas_Afirmativas.html">Datas Afirmativas</a></li>
+                    <li><a href="equipe.html">Equipe</a></li>
+                    <li><a href="parceiros.html">Parceiros</a></li>
+                    <li><a href="https://denuncie.rugidolgbtqi.com.br/">Denuncie</a></li>
+                    <li><a href="contatos.html">Contatos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+<br>
+<br>
+<br>
+
+    <div class="container-contatos">
+        <h2>Envie sua Mensagem</h2>
+        <div class="form-group">
+            <labelfor="nome">Nome:</label><br>
+            <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="nome"
+                placeholder="Digite o seu nome"
+                /><br><br>
+            <label for="email">E-mail:</label><br>
+            <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Digite o seu email"
+                /><br><br>
+            <label for="Telefone">Telefone:</label><br>
+            <input
+                type="tel"
+                id="Telefone"
+                name="phone" 
+                placeholder="(11) 1 11111111" required>
+                <script>
+                    document.getElementById('Telefone').addEventListener('input', function (e) {
+                      let value = e.target.value.replace(/\D/g, '');
+                      if (value.length > 11) value = value.slice(0, 11);
+                  
+                      if (value.length >= 2) {
+                        value = `(${value.slice(0, 2)}) ` + value.slice(2);
+                      }
+                      e.target.value = value;
+                    });
+                  </script>
+                <br><br>
+            <label for="cidade">Cidade</label><br>
+            <input
+                type="text"
+                class="form-control"
+                id="Cidade"
+                nome="Cidade"
+                placeholder="Digite a sua cidade"
+                /><br><br>
+            <label for="text">Mensagem</label><br>
+            <textarea
+                rows="5"
+                class="form-control"
+                id="Mensagem"
+                name="Mensagem">
+            </textarea><br><br>
+            <div class="button-container">
+            <button class="btn btn-primary" onclick="sendMail()">Enviar</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <section class="formularios">
+        <h1>Formularios</h1>
+        <div class="formularios-container">
+            <div class="formulario">
+                <h2>Formulário de Cadastramento da População LGBTQIA+ da Mata Sul de Pernambuco ( AMAS-LGBT )</h2>
+                <a href="https://forms.gle/cG7jPcuAFLG7T4Ey9" class="saiba-mais-forms">
+                    <button type="button" >Informar...</button>
+                </a>
+            </div>
+            <div class="formulario">
+                <h2>Retifica Mata Sul</h2>
+                <p>Formulário de Cadastramento para o Mutirão de Retificação do Registro de Nascimento</p>
+                <a href="https://forms.gle/2Uav1KHScE8TV52R7" class="saiba-mais-forms">
+                    <button type="button" >Informar...</button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container-rodape">
+            <div class="siga-nos">
+                <h3>Siga-Nos</h3>
+                <div class="icones-sociais">
+                    <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
+                    <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
+                </div>
+            </div>
+            <div class="informacoes-contato">
+                <h3>Informações De Contato</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Endereço: Rua 13 de maio, 31, Cohab 10, Palmares - PE, CEP: 55540-000</p>
+                <p><i class="fas fa-phone"></i> Telefone: (81) 3661-0333</p>
+                <p><i class="fas fa-envelope"></i> E-mail: amaslgbt@gmail.com</p>
+            </div>
+            <div class="menu">
+                <h3>Menu</h3>
+                <div class="colunas-menu">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="acoes.html">Ações</a></li>
+                        <li><a href="aAssociacao.html">A Associação</a></li>
+                        <li><a href="datas_Afirmativas.html">Datas Afirmativas</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="equipe.html">Equipe</a></li>
+                        <li><a href="parceiros.html">Parceiros</a></li>
+                        <li><a href="ttps://denuncie.rugidolgbtqi.com.br/">Denuncie</a></li>
+                        <li><a href="contatos.html">Contatos</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

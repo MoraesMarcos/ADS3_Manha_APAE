@@ -1,83 +1,146 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>APAE Palmares</title>
-  <link rel="stylesheet" href="css/navbar.css" />
-  <link rel="stylesheet" href="css/index.css" />
-  <link rel="stylesheet" href="css/rodape.css" />
-  <link rel="shortcut icon" href="img/autismo_logo.png" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <script src="javaS.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <title>AMAS LGBTQI+</title>
+    
 </head>
-
-<body>
-  <header id="navbar-placeholder"></header>
-
-  <main>
-    <section class="carousel">
-      <h2 class="carousel-title">
-        Bem-vindo à<br /><span>APAE Palmares</span>
-      </h2>
-      <div class="carousel-container">
-        <div class="carousel-slide">
-          <img src="img/img_carrossel/slide1.jpg" alt="Slide 1" />
-          <img src="img/img_carrossel/slide2.jpg" alt="Slide 2" />
-          <img src="img/img_carrossel/slide3.jpg" alt="Slide 3" />
-          <img src="img/img_carrossel/slide4.jpg" alt="Slide 4" />
-          <img src="img/img_carrossel/slide5.jpg" alt="Slide 5" />
-          <img src="img/img_carrossel/slide6.jpg" alt="Slide 6" />
+<header>
+    <div class="container-menu">
+        <div class="logo">
+            <img src="imgs/logoSemfundo.png" alt="AMAS LGBT">
         </div>
-        <div class="carousel-indicators"></div>
-      </div>
-    </section>
-    <br />
-
-    <section id="Atividades" class="activities-section">
-      <h2>Atividades na APAE</h2>
-    </section>
-
-    <section class="card-container">
-      <div class="card">
-        <img src="img/imagem1.png" alt="Descrição da imagem 1" />
-        <p>
-          O grupo que participou deste primeiro encontro é atendido pela
-          Associação de Pais e Amigos dos Excepcionais (APAE-Palmares), e
-          esteve no local junto com seus familiares e com representantes da
-          entidade.
-        </p>
-      </div>
-      <div class="card">
-        <img src="img/imagem2.png" alt="Descrição da imagem 2" />
-        <p>
-          O grupo que participou deste primeiro encontro é atendido pela
-          Associação de Pais e Amigos dos Excepcionais (APAE-Palmares), e
-          esteve no local junto com seus familiares e com representantes da
-          entidade.
-        </p>
-      </div>
-      <div class="card">
-        <img src="img/imagem3.png" alt="Descrição da imagem 3" />
-        <p>
-          Entrevista: APAE de Palmares, saiba o que é o que faz. - Blog do
-          Sobrinho
-        </p>
-      </div>
-    </section>
-
-    <div class="maps">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15776.3772698144!2d-35.5913663!3d-8.6825806!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x700a107d90ac679%3A0x885b3f2178706758!2sAPAE%20-%20Associa%C3%A7%C3%A3o%20de%20Pais%20e%20Amigos%20dos%20Excepcionais!5e0!3m2!1spt-BR!2sbr!4v1723138300878!5m2!1spt-BR!2sbr"
-        width="1500" height="600" style="border: 0" allowfullscreen="" loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="aAssociacao.html">A Associação</a></li>
+                <li><a href="acoes.html">Ações</a></li>
+                <li><a href="datas_Afirmativas.html">Datas Afirmativas</a></li>
+                <li><a href="equipe.html">Equipe</a></li>
+                <li><a href="parceiros.html">Parceiros</a></li>
+                <li><a href="https://denuncie.rugidolgbtqi.com.br/">Denuncie</a></li>
+                <li><a href="contatos.html">Contatos</a></li>
+            </ul>
+        </nav>
     </div>
-  </main>
+</header>
+<body>
+    <section class="bem-vindo-ao-site">
+        <video class="banner-video" autoplay muted loop>
+                <source src="imgs/banner.mp4" type="video/mp4">
+            </video>
+    </section>
+    <div style="text-align: center;" class="container-carrossel">
+        <h2>ÚLTIMOS POSTS</h2>
+        <div class="carrossel">
+            <div class="carrossel-slide">
+                <img src="imgs/atencao.jpeg" alt="Imagem 1">
+                <a href="https://www.instagram.com/p/C40jEyFgpnw/?igsh=aDFpcDVwMHhta2Ny"
+                    class="saiba-mais">SAIBA MAIS...</a>
+            </div>
+            <div class="carrossel-slide">
+                <img src="imgs/encontroestadual.jpeg" alt="Imagem 2">
+                <a href="https://www.instagram.com/p/C-JEYqsOSvA/?igsh=M3Via3ljbGlvdHVk"
+                class="saiba-mais">SAIBA MAIS...</a>
+            </div>
+            <div class="carrossel-slide">
+                <img src="imgs/semanapedagocia.jpeg" alt="Imagem 3">
+                <a href="https://www.instagram.com/p/C-i4hI0Pmam/?igsh=N3Q1OGtzZ3d3d2Z3"
+                class="saiba-mais">SAIBA MAIS...</a>
+            </div>
+            
+        </div>
+        <button class="carrossel-btn anterior" onclick="changeSlide(-1)">&#10094;</button>
+        <button class="carrossel-btn proximo" onclick="changeSlide(1)">&#10095;</button>
+        <div class="carrossel-indicators">
+            <span class="ponto-carrossel" onclick="currentSlide(1)"></span>
+            <span class="ponto-carrossel" onclick="currentSlide(2)"></span>
+            <span class="ponto-carrossel" onclick="currentSlide(3)"></span>
+        </div>
+        <a href="acoes.html">
+            <button type="button" class="btn-veja-mais">VEJA MAIS...</button>
+        </a>
+    </div>
+    <div class="container-datas-afirmativas">
+        <section class="DatasAfirmativas">
+            <h2>Datas Afirmativas</h2>
+            <div class="container-datas">
+                <div class="container-imagem">
+                    <img src="imgs/banner.jpeg" alt="Imagem 1">
+                    <div class="legenda">
+                        <p>31 de março <br>Dia Internacional da Visibilidade Trans</p>
+                        <a href="https://pt.wikipedia.org/wiki/Dia_Internacional_da_Visibilidade_Transg%C3%AAnero">
+                            <button type="button">Saiba Mais</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="container-imagem">
+                    <img src="imgs/banner.jpeg" alt="Imagem 2">
+                    <div class="legenda">
+                        <p>17 de maio <br>Dia Internacional de combate à Homofobia</p>
+                        <a href="https://institutolegado.org/blog/dia-internacional-contra-a-lgbtfobia/?gad_source=1&gclid=EAIaIQobChMIze-D9ouBiAMVIGBIAB3jWDioEAAYASAAEgLW5PD_BwE">
+                            <button type="button">Saiba Mais</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="container-imagem">
+                    <img src="imgs/banner.jpeg" alt="Imagem 3">
+                    <div class="legenda">
+                        <p>28 de junho <br>Dia Internacional do Orgulho LGBTQIA+</p>
+                        <a href="https://pt.wikipedia.org/wiki/Dia_Internacional_do_Orgulho_LGBT">
+                            <button type="button">Saiba Mais</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a href="datas_Afirmativas.html"><button class="btn-mais-datas">Mais Datas</button></a>
+         </section>
+    </div>
 
-  <div id="footer-placeholder"></div>
-  <script src="js/navbar.js"></script>
-  <script src="js/carousel.js"></script>
-  <script src="js/index.js"></script>
-  <script src="js/rodape.js"></script>
+    <div class="container-counter">
+        <h3>PROXIMA PARADA LGBTQIAPN+</h3>
+        <iframe id="" scrolling="no" src="https://embed-countdown.onlinealarmkur.com/pt/#2025-06-02T12:00:00@America%2FSao_Paulo" width="460" height="180" style="display: flex; margin: 10px auto; border: 0px; & html{ overflow: hidden; }"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d467540.1259688079!2d-46.52008087497573!3d-23.723931463277708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1715111145035!5m2!1spt-BR!2sbr" width="1400" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    
+<footer>
+    <div class="container-rodape">
+        <div class="siga-nos">
+            <h3>Siga-Nos</h3>
+            <div class="icones-sociais">
+                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
+                <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="informacoes-contato">
+            <h3>Informações De Contato</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Endereço: Rua 13 de maio, 31, Cohab 10, Palmares - PE, CEP: 55540-000</p>
+            <p><i class="fas fa-phone"></i> Telefone: (81) 3661-0333</p>
+            <p><i class="fas fa-envelope"></i> E-mail: amaslgbt@gmail.com</p>
+        </div>
+        <div class="menu">
+            <h3>Menu</h3>
+            <div class="colunas-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="acoes.html">Ações</a></li>
+                    <li><a href="aAssociacao.html">A Associação</a></li>
+                    <li><a href="datas_Afirmativas.html">Datas Afirmativas</a></li>
+                </ul>
+                <ul>
+                    <li><a href="equipe.html">Equipe</a></li>
+                    <li><a href="parceiros.html">Parceiros</a></li>
+                    <li><a href="ttps://denuncie.rugidolgbtqi.com.br/">Denuncie</a></li>
+                    <li><a href="contatos.html">Contatos</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="javaS.js"></script>
 </body>
-
 </html>
