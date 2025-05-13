@@ -1,4 +1,5 @@
-# 💙 Projeto APAE 
+# 💙 Projeto APAE - Página Inicial Responsiva
+
 Olá! Este repositório contém o código da página inicial desenvolvida para a APAE (Associação de Pais e Amigos dos Excepcionais), com foco especial no atendimento e inclusão de pessoas com Transtorno do Espectro Autista (TEA). O projeto foi feito com muito carinho e atenção aos detalhes, buscando oferecer uma experiência acessível e informativa.
 
 ## 🧠 Sobre o Projeto
