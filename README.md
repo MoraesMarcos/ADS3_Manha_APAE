@@ -37,21 +37,6 @@ A página foi desenvolvida com layout responsivo, se adaptando bem a celulares, 
 - Inclusão de recursos de acessibilidade como botão de alto contraste ou integração com o VLibras;
 - Rodapé com localização e redes sociais;
 - Integração com Flask para tornar o site dinâmico.
-
-## 🙋‍♂️ Sobre mim
-
-Sou estudante de Análise e Desenvolvimento de Sistemas (ADS) e atualmente participo de um projeto de pesquisa voltado para detecção de câncer de pele utilizando técnicas de aprendizado de máquina. Além disso, atuo como estagiário na empresa SurfGuru, onde colaboro na área de análise de dados, contribuindo para transformar informações em insights valiosos.
-
-Tenho muito interesse por tecnologia, acessibilidade e projetos com impacto social, como este, voltado para inclusão de pessoas autistas. Estou sempre disposto a aprender e melhorar como desenvolvedor e ser humano.
-
-## 📬 Contato
-
-Caso queira entrar em contato comigo para conversar sobre o projeto ou sugerir algo:
-
-📧 gustavson.adm@gmail.com  
-📱 (81) 9 9818-7646
-
----
-
+ 
 **Muito obrigado por visitar este repositório!**  
 Estou sempre buscando evoluir e contribuir com projetos que fazem a diferença. 💙
