@@ -1,1 +1,0 @@
-Estou realizando testes de usabilidade e interface. Em termos de usabilidade, como funcionário, não há necessidade de acessar informações sobre Educação Especial, Saúde Integral e Inclusão Social.Uma vez que sou funcionário, não preciso dessas informações, exceto quando for necessário atualizá-las atualizalas.
