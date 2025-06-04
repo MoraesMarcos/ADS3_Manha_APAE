@@ -645,5 +645,4 @@ def sobre():
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     criar_banco_de_dados()
-    print("🚀 Servidor Flask iniciado em http://127.0.0.1:5000")
     app.run(debug=True)
