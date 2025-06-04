@@ -562,87 +562,88 @@ def excluir_usuario(id):
     flash('Usuário excluído com sucesso!', 'success')
     return redirect(url_for('listar_usuarios'))
 
-    @app.route('/usuarios')
-    def listar_usuarios():
-        if 'usuario' not in session:
-            return redirect(url_for('login'))
-        situacao = request.args.get('situacao')
-        busca = request.args.get('busca')
-        conn = sqlite3.connect('usuarios.db')
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        query = "SELECT id, nome, cpf, situacao_cadastro, data_cadastro FROM usuarios"
-        conditions = []
-        params = []
-        if situacao and situacao != 'todos':
-            conditions.append("situacao_cadastro = ?")
-            params.append(situacao)
-        if busca:
-            conditions.append("(nome LIKE ? OR cpf LIKE ?)")
-            params.extend([f"%{busca}%", f"%{busca}%"])
-        if conditions:
-            query += " WHERE " + " AND ".join(conditions)
-        query += " ORDER BY nome ASC"
-        cursor.execute(query, params)
-        usuarios = cursor.fetchall()
-        conn.close()
-        return render_template('usuarios.html', usuarios=usuarios, situacao=situacao, busca=busca)
+@app.route('/usuarios')
+def listar_usuarios():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    situacao = request.args.get('situacao')
+    busca = request.args.get('busca')
+    conn = sqlite3.connect('usuarios.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    query = "SELECT id, nome, cpf, situacao_cadastro, data_cadastro FROM usuarios"
+    conditions = []
+    params = []
+    if situacao and situacao != 'todos':
+        conditions.append("situacao_cadastro = ?")
+        params.append(situacao)
+    if busca:
+        conditions.append("(nome LIKE ? OR cpf LIKE ?)")
+        params.extend([f"%{busca}%", f"%{busca}%"])
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+    query += " ORDER BY nome ASC"
+    cursor.execute(query, params)
+    usuarios = cursor.fetchall()
+    conn.close()
+    return render_template('usuarios.html', usuarios=usuarios, situacao=situacao, busca=busca)
 
-    @app.route('/usuario/<int:id>')
-    def visualizar_usuario(id):
-        if 'usuario' not in session:
-            return redirect(url_for('login'))
-        conn = sqlite3.connect('usuarios.db')
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM usuarios WHERE id = ?", (id,))
-        usuario = cursor.fetchone()
-        conn.close()
-        if not usuario:
-            flash('Usuário não encontrado', 'danger')
-            return redirect(url_for('listar_usuarios'))
-        return render_template('visualizar_usuario.html', usuario=usuario)
+@app.route('/usuario/<int:id>')
+def visualizar_usuario(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    conn = sqlite3.connect('usuarios.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM usuarios WHERE id = ?", (id,))
+    usuario = cursor.fetchone()
+    conn.close()
+    if not usuario:
+        flash('Usuário não encontrado', 'danger')
+        return redirect(url_for('listar_usuarios'))
+    return render_template('visualizar_usuario.html', usuario=usuario)
 
-    @app.route('/dashboard')
-    @admin_required
-    def dashboard():
-        if 'usuario' not in session:
-            return redirect(url_for('login'))
-        conn = sqlite3.connect('usuarios.db')
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        cursor.execute("SELECT COUNT(*) as total FROM usuarios")
-        total_usuarios = cursor.fetchone()['total']
-        cursor.execute("SELECT COUNT(*) as ativos FROM usuarios WHERE situacao_cadastro = 'ativo'")
-        ativos = cursor.fetchone()['ativos']
-        cursor.execute("SELECT COUNT(*) as inativos FROM usuarios WHERE situacao_cadastro = 'inativo'")
-        inativos = cursor.fetchone()['inativos']
-        cursor.execute("SELECT COUNT(*) as suspensos FROM usuarios WHERE situacao_cadastro = 'suspenso'")
-        suspensos = cursor.fetchone()['suspensos']
-        areas = {
-            'assistencia': 0,
-            'saude': 0,
-            'educacao': 0,
-            'social': 0
-        }
-        cursor.execute("SELECT COUNT(*) as count FROM usuarios WHERE area LIKE '%assistencia%'")
-        areas['assistencia'] = cursor.fetchone()['count']
-        cursor.execute("SELECT nome, data_cadastro FROM usuarios ORDER BY data_cadastro DESC LIMIT 5")
-        ultimos_cadastros = cursor.fetchall()
-        conn.close()
-        return render_template('dashboard.html',
-                            total_usuarios=total_usuarios,
-                            ativos=ativos,
-                            inativos=inativos,
-                            suspensos=suspensos,
-                            areas=areas,
-                            ultimos_cadastros=ultimos_cadastros)
+@app.route('/dashboard')
+@admin_required
+def dashboard():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    conn = sqlite3.connect('usuarios.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) as total FROM usuarios")
+    total_usuarios = cursor.fetchone()['total']
+    cursor.execute("SELECT COUNT(*) as ativos FROM usuarios WHERE situacao_cadastro = 'ativo'")
+    ativos = cursor.fetchone()['ativos']
+    cursor.execute("SELECT COUNT(*) as inativos FROM usuarios WHERE situacao_cadastro = 'inativo'")
+    inativos = cursor.fetchone()['inativos']
+    cursor.execute("SELECT COUNT(*) as suspensos FROM usuarios WHERE situacao_cadastro = 'suspenso'")
+    suspensos = cursor.fetchone()['suspensos']
+    areas = {
+        'assistencia': 0,
+        'saude': 0,
+        'educacao': 0,
+        'social': 0
+    }
+    cursor.execute("SELECT COUNT(*) as count FROM usuarios WHERE area LIKE '%assistencia%'")
+    areas['assistencia'] = cursor.fetchone()['count']
+    cursor.execute("SELECT nome, data_cadastro FROM usuarios ORDER BY data_cadastro DESC LIMIT 5")
+    ultimos_cadastros = cursor.fetchall()
+    conn.close()
+    return render_template('dashboard.html',
+                          total_usuarios=total_usuarios,
+                          ativos=ativos,
+                          inativos=inativos,
+                          suspensos=suspensos,
+                          areas=areas,
+                          ultimos_cadastros=ultimos_cadastros)
 
-    @app.route('/sobre')
-    def sobre():
-        return render_template('sobre.html')
+@app.route('/sobre')
+def sobre():
+    return render_template('sobre.html')
 
-    if __name__ == '__main__':
-        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-        criar_banco_de_dados()
-        app.run(debug=True)
+if __name__ == '__main__':
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    criar_banco_de_dados()
+    print("🚀 Servidor Flask iniciado em http://127.0.0.1:5000")
+    app.run(debug=True)
