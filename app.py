@@ -251,12 +251,10 @@ def editar_agendamento(id):
         flash(f'Erro ao atualizar agendamento: {str(e)}', 'danger')
     return redirect(url_for('listar_agendamentos'))
 
+#refatorado 08: home()
 @app.route('/')
 def home():
-    if 'usuario' in session:
-        return render_template('index.html')
-    else:
-        return render_template('index.html')
+    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
