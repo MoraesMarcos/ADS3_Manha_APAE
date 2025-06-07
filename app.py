@@ -223,31 +223,29 @@ def listar_agendamentos():
         agendamentos = cursor.fetchall()
     return render_template('admin/agendamentos.html', agendamentos=agendamentos, status=status)
 
+#refatorado 07: editar_agendamento()
 @app.route('/admin/agendamento/<int:id>/editar', methods=['POST'])
 @admin_required
 def editar_agendamento(id):
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     novo_status = request.form['status']
     responsavel = request.form.get('responsavel', '').strip()
     mensagem = request.form.get('mensagem', '').strip()
     try:
-        conn = sqlite3.connect('usuarios.db')
-        cursor = conn.cursor()
-        if novo_status == 'confirmado':
-            cursor.execute('''
-                UPDATE agendamentos 
-                SET status = ?, responsavel = ?, data_confirmacao = CURRENT_TIMESTAMP
-                WHERE id = ?
-            ''', (novo_status, responsavel, id))
-        else:
-            cursor.execute('''
-                UPDATE agendamentos 
-                SET status = ?, responsavel = ?, mensagem = ?
-                WHERE id = ?
-            ''', (novo_status, responsavel, mensagem, id))
-        conn.commit()
-        conn.close()
+        with sqlite3.connect('usuarios.db') as conn:
+            cursor = conn.cursor()
+            if novo_status == 'confirmado':
+                cursor.execute('''
+                               UPDATE agendamentos
+                               SET status = ?, responsavel = ?, data_confirmacao = CURRENT_TIMESTAMP
+                               WHERE id = ?
+                               ''', (novo_status, responsavel, id))
+            else:
+                cursor.execute('''
+                               UPDATE agendamentos
+                               SET status = ?, responsavel = ?, mensagem = ?
+                               WHERE id = ?
+                               ''', (novo_status, responsavel, mensagem, id))
+            conn.commit()
         flash('Agendamento atualizado com sucesso!', 'success')
     except Exception as e:
         flash(f'Erro ao atualizar agendamento: {str(e)}', 'danger')
