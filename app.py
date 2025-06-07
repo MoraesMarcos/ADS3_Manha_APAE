@@ -150,7 +150,7 @@ def criar_banco_de_dados():
     conn.commit()
     conn.close()
 
-
+#refatorado 03: login_required(f) "sem modificações, bem estruturado"
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
