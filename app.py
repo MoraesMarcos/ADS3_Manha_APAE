@@ -170,35 +170,39 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+#refatorado 05: agendamento()
 @app.route('/agendamento', methods=['GET', 'POST'])
 @login_required
 def agendamento():
     if request.method == 'POST':
+        nome = request.form.get('nome', '').strip()
+        email = request.form.get('email', '').strip()
+        telefone = request.form.get('telefone', '').strip()
+        tipo_consulta = request.form.get('tipo_consulta', '').strip()
+        preferencia_data = request.form.get('preferencia_data', '').strip()
+        preferencia_horario = request.form.get('preferencia_horario', '').strip()
+        mensagem = request.form.get('mensagem', '').strip()
+
+        if not nome or not email or not telefone or not tipo_consulta:
+            flash('Por favor, preencha todos os campos obrigatórios', 'danger')
+            return redirect(url_for('agendamento'))
+
         try:
-            nome = request.form['nome'].strip()
-            email = request.form['email'].strip()
-            telefone = request.form['telefone'].strip()
-            tipo_consulta = request.form['tipo_consulta'].strip()
-            preferencia_data = request.form.get('preferencia_data', '').strip()
-            preferencia_horario = request.form.get('preferencia_horario', '').strip()
-            mensagem = request.form.get('mensagem', '').strip()
-            if not nome or not email or not telefone or not tipo_consulta:
-                flash('Por favor, preencha todos os campos obrigatórios', 'danger')
-                return redirect(url_for('agendamento'))
-            conn = sqlite3.connect('usuarios.db')
-            cursor = conn.cursor()
-            cursor.execute('''
-                INSERT INTO agendamentos 
-                (nome, email, telefone, tipo_consulta, preferencia_data, preferencia_horario, mensagem)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (nome, email, telefone, tipo_consulta, preferencia_data, preferencia_horario, mensagem))
-            conn.commit()
-            conn.close()
+            with sqlite3.connect('usuarios.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                               INSERT INTO agendamentos
+                               (nome, email, telefone, tipo_consulta, preferencia_data, preferencia_horario, mensagem)
+                               VALUES (?, ?, ?, ?, ?, ?, ?)
+                               ''', (nome, email, telefone, tipo_consulta, preferencia_data, preferencia_horario, mensagem))
+                conn.commit()
+
             flash('Solicitação de agendamento enviada com sucesso! Entraremos em contato em breve.', 'success')
             return redirect(url_for('home'))
         except Exception as e:
             flash(f'Erro ao enviar solicitação: {str(e)}', 'danger')
             return redirect(url_for('agendamento'))
+
     return render_template('agendamento.html')
 
 @app.route('/admin/agendamentos')
