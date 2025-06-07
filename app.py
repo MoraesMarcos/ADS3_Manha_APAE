@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 from functools import wraps
 
 app = Flask(
-    __name__, static_folder='/home/gustavson-barros/Área de trabalho/apae-system-python/static')
+    __name__, static_folder='static')
 app.secret_key = 'sua_chave_secreta_aqui'
 
 # Configurações para upload de arquivos

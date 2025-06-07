@@ -7,6 +7,7 @@ __pycache__/
 venv/
 .env/
 .venv/
+.idea/
 
 # Arquivos de configuração locais
 .env
