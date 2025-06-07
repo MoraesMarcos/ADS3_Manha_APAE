@@ -29,10 +29,12 @@ usuarios = {
         'tipo': 'funcionario'
     }
 }
-
+#refatorado 01: allowed_file
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    if '.' not in filename:
+        return False
+    extension = filename.rsplit('.', 1)[1].lower()
+    return extension in ALLOWED_EXTENSIONS
 
 def criar_banco_de_dados():
     conn = sqlite3.connect('usuarios.db')
