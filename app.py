@@ -205,24 +205,22 @@ def agendamento():
 
     return render_template('agendamento.html')
 
+#refatorado 06: listar_agendamentos()
 @app.route('/admin/agendamentos')
 @admin_required
 def listar_agendamentos():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     status = request.args.get('status', 'pendente')
-    conn = sqlite3.connect('usuarios.db')
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-    query = "SELECT * FROM agendamentos"
-    params = []
-    if status != 'todos':
-        query += " WHERE status = ?"
-        params.append(status)
-    query += " ORDER BY data_solicitacao DESC"
-    cursor.execute(query, params)
-    agendamentos = cursor.fetchall()
-    conn.close()
+    with sqlite3.connect('usuarios.db') as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        query = "SELECT * FROM agendamentos"
+        params = []
+        if status != 'todos':
+            query += " WHERE status = ?"
+            params.append(status)
+        query += " ORDER BY data_solicitacao DESC"
+        cursor.execute(query, params)
+        agendamentos = cursor.fetchall()
     return render_template('admin/agendamentos.html', agendamentos=agendamentos, status=status)
 
 @app.route('/admin/agendamento/<int:id>/editar', methods=['POST'])
