@@ -160,10 +160,11 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+#refatorado 04: admin_required(f)
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'tipo_usuario' not in session or session['tipo_usuario'] != 'admin':
+        if session.get('tipo_usuario') != 'admin':
             flash('Acesso restrito a administradores', 'danger')
             return redirect(url_for('home'))
         return f(*args, **kwargs)
