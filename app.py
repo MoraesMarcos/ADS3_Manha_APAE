@@ -289,7 +289,7 @@ def esqueci_senha():
         return redirect(url_for('login'))
     return render_template('esqueci_senha.html')
 
-
+#refatorado 11: logout()
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
