@@ -36,111 +36,120 @@ def allowed_file(filename):
     extension = filename.rsplit('.', 1)[1].lower()
     return extension in ALLOWED_EXTENSIONS
 
+#refatorado 02: criar_banco_de_dados()
 def criar_banco_de_dados():
     conn = sqlite3.connect('usuarios.db')
     cursor = conn.cursor()
+
+    # Tabela de usuários
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS usuarios (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
-        nome_social TEXT,
-        prontuario TEXT,
-        situacao_cadastro TEXT,
-        data_entrada_saida TEXT,
-        cpf TEXT,
-        rg TEXT,
-        data_emissao_rg TEXT,
-        cartao_nascimento TEXT,
-        livro_folha TEXT,
-        cartorio TEXT,
-        naturalidade TEXT,
-        sexo TEXT,
-        data_nascimento TEXT,
-        ocupacao TEXT,
-        carteira_pcd TEXT,
-        cartao_nis TEXT,
-        cartao_sus TEXT,
-        raca_cor TEXT,
-        mobilidade TEXT,
-        tipo_deficiencia TEXT,
-        transtornos TEXT,
-        cid10 TEXT,
-        cid10_opcional1 TEXT,
-        cid10_opcional2 TEXT,
-        cid11 TEXT,
-        area TEXT,
-        cep TEXT,
-        endereco TEXT,
-        numero TEXT,
-        complemento TEXT,
-        bairro TEXT,
-        cidade TEXT,
-        uf TEXT,
-        email TEXT,
-        telefone_residencial TEXT,
-        telefone_recados TEXT,
-        pessoa_contato TEXT,
-        mae_nome TEXT,
-        mae_cpf TEXT,
-        mae_telefone TEXT,
-        mae_email TEXT,
-        mae_ocupacao TEXT,
-        pai_nome TEXT,
-        pai_cpf TEXT,
-        pai_telefone TEXT,
-        pai_email TEXT,
-        pai_ocupacao TEXT,
-        medicamento TEXT,
-        qual_medicamento TEXT,
-        alergia TEXT,
-        qual_alergia TEXT,
-        comorbidade TEXT,
-        qual_comorbidade TEXT,
-        convenio TEXT,
-        qual_convenio TEXT,
-        atividade_fisica TEXT,
-        data_liberacao TEXT,
-        uso_imagem TEXT,
-        transporte_ida TEXT,
-        transporte_volta TEXT,
-        observacoes TEXT,
-        notificacao_whatsapp TEXT,
-        laudo_nome TEXT,
-        laudo_caminho TEXT,
-        data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-    ''')
+                   CREATE TABLE IF NOT EXISTS usuarios (
+                                                           id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                           nome TEXT NOT NULL,
+                                                           nome_social TEXT,
+                                                           prontuario TEXT,
+                                                           situacao_cadastro TEXT,
+                                                           data_entrada_saida TEXT,
+                                                           cpf TEXT,
+                                                           rg TEXT,
+                                                           data_emissao_rg TEXT,
+                                                           cartao_nascimento TEXT,
+                                                           livro_folha TEXT,
+                                                           cartorio TEXT,
+                                                           naturalidade TEXT,
+                                                           sexo TEXT,
+                                                           data_nascimento TEXT,
+                                                           ocupacao TEXT,
+                                                           carteira_pcd TEXT,
+                                                           cartao_nis TEXT,
+                                                           cartao_sus TEXT,
+                                                           raca_cor TEXT,
+                                                           mobilidade TEXT,
+                                                           tipo_deficiencia TEXT,
+                                                           transtornos TEXT,
+                                                           cid10 TEXT,
+                                                           cid10_opcional1 TEXT,
+                                                           cid10_opcional2 TEXT,
+                                                           cid11 TEXT,
+                                                           area TEXT,
+                                                           cep TEXT,
+                                                           endereco TEXT,
+                                                           numero TEXT,
+                                                           complemento TEXT,
+                                                           bairro TEXT,
+                                                           cidade TEXT,
+                                                           uf TEXT,
+                                                           email TEXT,
+                                                           telefone_residencial TEXT,
+                                                           telefone_recados TEXT,
+                                                           pessoa_contato TEXT,
+                                                           mae_nome TEXT,
+                                                           mae_cpf TEXT,
+                                                           mae_telefone TEXT,
+                                                           mae_email TEXT,
+                                                           mae_ocupacao TEXT,
+                                                           pai_nome TEXT,
+                                                           pai_cpf TEXT,
+                                                           pai_telefone TEXT,
+                                                           pai_email TEXT,
+                                                           pai_ocupacao TEXT,
+                                                           medicamento TEXT,
+                                                           qual_medicamento TEXT,
+                                                           alergia TEXT,
+                                                           qual_alergia TEXT,
+                                                           comorbidade TEXT,
+                                                           qual_comorbidade TEXT,
+                                                           convenio TEXT,
+                                                           qual_convenio TEXT,
+                                                           atividade_fisica TEXT,
+                                                           data_liberacao TEXT,
+                                                           uso_imagem TEXT,
+                                                           transporte_ida TEXT,
+                                                           transporte_volta TEXT,
+                                                           observacoes TEXT,
+                                                           notificacao_whatsapp TEXT,
+                                                           laudo_nome TEXT,
+                                                           laudo_caminho TEXT,
+                                                           data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                   )
+                   ''')
+
+    # Tabela de feedbacks
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS feedbacks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        usuario_id INTEGER,
-        usuario_nome TEXT,
-        tipo TEXT NOT NULL,
-        mensagem TEXT NOT NULL,
-        data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        status TEXT DEFAULT 'pendente',
-        resposta TEXT,
-        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-    )
-    ''')
+                   CREATE TABLE IF NOT EXISTS feedbacks (
+                                                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                            usuario_id INTEGER,
+                                                            usuario_nome TEXT,
+                                                            tipo TEXT NOT NULL,
+                                                            mensagem TEXT NOT NULL,
+                                                            data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                                            status TEXT DEFAULT 'pendente',
+                                                            resposta TEXT,
+                                                            FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+                       )
+                   ''')
+
+    # Tabela de agendamentos
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS agendamentos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
-        email TEXT NOT NULL,
-        telefone TEXT NOT NULL,
-        tipo_consulta TEXT NOT NULL,
-        preferencia_data TEXT,
-        preferencia_horario TEXT,
-        mensagem TEXT,
-        status TEXT DEFAULT 'pendente',
-        data_solicitacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        data_confirmacao TIMESTAMP,
-        responsavel TEXT
-    )
-    ''')
+                   CREATE TABLE IF NOT EXISTS agendamentos (
+                                                               id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                               nome TEXT NOT NULL,
+                                                               email TEXT NOT NULL,
+                                                               telefone TEXT NOT NULL,
+                                                               tipo_consulta TEXT NOT NULL,
+                                                               preferencia_data TEXT,
+                                                               preferencia_horario TEXT,
+                                                               mensagem TEXT,
+                                                               status TEXT DEFAULT 'pendente',
+                                                               data_solicitacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                                               data_confirmacao TIMESTAMP,
+                                                               responsavel TEXT
+                   )
+                   ''')
+
     conn.commit()
     conn.close()
+
 
 def login_required(f):
     @wraps(f)
