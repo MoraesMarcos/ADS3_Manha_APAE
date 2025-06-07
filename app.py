@@ -277,6 +277,7 @@ def login():
         return redirect(url_for('home'))
     return render_template('login.html')
 
+#refatorado 10: esqueci_senha()
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
 def esqueci_senha():
     if request.method == 'POST':
@@ -287,6 +288,7 @@ def esqueci_senha():
         flash('Se o e-mail estiver cadastrado, enviaremos instruções para recuperação', 'info')
         return redirect(url_for('login'))
     return render_template('esqueci_senha.html')
+
 
 @app.route('/logout')
 def logout():
