@@ -256,6 +256,7 @@ def editar_agendamento(id):
 def home():
     return render_template('index.html')
 
+#refatorado 09: login()
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -270,9 +271,8 @@ def login():
             session['tipo_usuario'] = usuarios[usuario]['tipo']
             flash(f'Bem-vindo, {usuario.capitalize()}!', 'success')
             return redirect(url_for('home'))
-        else:
-            flash('Usuário ou senha incorretos', 'danger')
-            return redirect(url_for('login'))
+        flash('Usuário ou senha incorretos', 'danger')
+        return redirect(url_for('login'))
     if 'usuario' in session:
         return redirect(url_for('home'))
     return render_template('login.html')
