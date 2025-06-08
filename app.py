@@ -598,32 +598,40 @@ def excluir_usuario(id):
     flash('Usuário excluído com sucesso!', 'success')
     return redirect(url_for('listar_usuarios'))
 
-
+#refatorado 21: listar_usuarios()
 @app.route('/usuarios')
+@login_required
 def listar_usuarios():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     situacao = request.args.get('situacao')
     busca = request.args.get('busca')
+
     conn = sqlite3.connect('usuarios.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
+
     query = "SELECT id, nome, cpf, situacao_cadastro, data_cadastro FROM usuarios"
     conditions = []
     params = []
+
     if situacao and situacao != 'todos':
         conditions.append("situacao_cadastro = ?")
         params.append(situacao)
+
     if busca:
         conditions.append("(nome LIKE ? OR cpf LIKE ?)")
         params.extend([f"%{busca}%", f"%{busca}%"])
+
     if conditions:
         query += " WHERE " + " AND ".join(conditions)
+
     query += " ORDER BY nome ASC"
+
     cursor.execute(query, params)
     usuarios = cursor.fetchall()
     conn.close()
+
     return render_template('usuarios.html', usuarios=usuarios, situacao=situacao, busca=busca)
+
 
 @app.route('/usuario/<int:id>')
 def visualizar_usuario(id):
