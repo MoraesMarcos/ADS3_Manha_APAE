@@ -690,9 +690,11 @@ def dashboard():
                            ultimos_cadastros=ultimos_cadastros)
 
 
+# refatorado 24: sobre()
 @app.route('/sobre')
 def sobre():
     return render_template('sobre.html')
+
 
 if __name__ == '__main__':
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
