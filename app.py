@@ -29,19 +29,16 @@ usuarios = {
         'tipo': 'funcionario'
     }
 }
-#refatorado 01: allowed_file
 def allowed_file(filename):
     if '.' not in filename:
         return False
     extension = filename.rsplit('.', 1)[1].lower()
     return extension in ALLOWED_EXTENSIONS
 
-#refatorado 02: criar_banco_de_dados()
 def criar_banco_de_dados():
     conn = sqlite3.connect('usuarios.db')
     cursor = conn.cursor()
 
-    # Tabela de usuários
     cursor.execute('''
                    CREATE TABLE IF NOT EXISTS usuarios (
                                                            id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -114,7 +111,6 @@ def criar_banco_de_dados():
                    )
                    ''')
 
-    # Tabela de feedbacks
     cursor.execute('''
                    CREATE TABLE IF NOT EXISTS feedbacks (
                                                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -129,7 +125,6 @@ def criar_banco_de_dados():
                        )
                    ''')
 
-    # Tabela de agendamentos
     cursor.execute('''
                    CREATE TABLE IF NOT EXISTS agendamentos (
                                                                id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -150,7 +145,6 @@ def criar_banco_de_dados():
     conn.commit()
     conn.close()
 
-#refatorado 03: login_required(f) "sem modificações, bem estruturado"
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -160,7 +154,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-#refatorado 04: admin_required(f)
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -170,7 +163,6 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-#refatorado 05: agendamento()
 @app.route('/agendamento', methods=['GET', 'POST'])
 @login_required
 def agendamento():
@@ -205,7 +197,6 @@ def agendamento():
 
     return render_template('agendamento.html')
 
-#refatorado 06: listar_agendamentos()
 @app.route('/admin/agendamentos')
 @admin_required
 def listar_agendamentos():
@@ -223,7 +214,6 @@ def listar_agendamentos():
         agendamentos = cursor.fetchall()
     return render_template('admin/agendamentos.html', agendamentos=agendamentos, status=status)
 
-#refatorado 07: editar_agendamento()
 @app.route('/admin/agendamento/<int:id>/editar', methods=['POST'])
 @admin_required
 def editar_agendamento(id):
@@ -251,12 +241,10 @@ def editar_agendamento(id):
         flash(f'Erro ao atualizar agendamento: {str(e)}', 'danger')
     return redirect(url_for('listar_agendamentos'))
 
-#refatorado 08: home()
 @app.route('/')
 def home():
     return render_template('index.html')
 
-#refatorado 09: login()
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -277,7 +265,6 @@ def login():
         return redirect(url_for('home'))
     return render_template('login.html')
 
-#refatorado 10: esqueci_senha()
 @app.route('/esqueci-senha', methods=['GET', 'POST'])
 def esqueci_senha():
     if request.method == 'POST':
@@ -289,7 +276,6 @@ def esqueci_senha():
         return redirect(url_for('login'))
     return render_template('esqueci_senha.html')
 
-#refatorado 11: logout()
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
@@ -298,7 +284,6 @@ def logout():
     flash('Você saiu do sistema', 'info')
     return redirect(url_for('login'))
 
-#refatorado 12: cadastro()
 @app.route('/cadastro', methods=['GET', 'POST'])
 @login_required
 def cadastro():
@@ -357,7 +342,6 @@ def cadastro():
 
     return render_template('cadastro.html')
 
-#refatorado 13: feedback()
 @app.route('/feedback', methods=['GET', 'POST'])
 @login_required
 def feedback():
@@ -392,7 +376,6 @@ def feedback():
 
     return render_template('feedback.html')
 
-#refatorado 14: excluir_feedback()
 @app.route('/admin/feedback/<int:id>/excluir', methods=['POST'])
 @admin_required
 def excluir_feedback(id):
@@ -405,7 +388,6 @@ def excluir_feedback(id):
         flash(f'Erro ao excluir feedback: {str(e)}', 'danger')
     return redirect(url_for('listar_feedbacks'))
 
-#refatorado 15: listar_feedbacks()
 @app.route('/admin/feedbacks')
 @admin_required
 def listar_feedbacks():
@@ -427,7 +409,6 @@ def listar_feedbacks():
         feedbacks = []
     return render_template('admin/feedbacks.html', feedbacks=feedbacks, status=status)
 
-#refatorado 16: responder_feedback()
 @app.route('/admin/feedback/<int:id>/responder', methods=['POST'])
 @admin_required
 def responder_feedback(id):
@@ -451,7 +432,6 @@ def responder_feedback(id):
     return redirect(url_for('listar_feedbacks'))
 
 
-#refatorado 17: exportar_usuarios_csv()
 @app.route('/exportar/usuarios_csv')
 @login_required
 def exportar_usuarios_csv():
@@ -474,7 +454,6 @@ def exportar_usuarios_csv():
     return response
 
 
-#refatorado 18: editar_usuario()
 @app.route('/usuario/<int:id>/editar', methods=['GET', 'POST'])
 @login_required
 def editar_usuario(id):
@@ -522,7 +501,6 @@ def editar_usuario(id):
             set_clause = ', '.join([f"{campo} = ?" for campo in campos])
             valores = [dados_limpos.get(campo, '') for campo in campos]
 
-            # Não duplicar valores do laudo, pois já pegamos acima.
             valores.append(id)
 
             cursor.execute(f'''
@@ -553,7 +531,6 @@ def editar_usuario(id):
 
     return render_template('editar_usuario.html', usuario=usuario)
 
-#refatorado 19: download_laudo()
 @app.route('/download/laudo/<int:user_id>')
 @login_required
 def download_laudo(user_id):
@@ -576,7 +553,6 @@ def download_laudo(user_id):
     )
 
 
-#refatorado 20: excluir_usuario()
 @app.route('/usuario/<int:id>/excluir', methods=['POST'])
 @login_required
 def excluir_usuario(id):
@@ -598,7 +574,6 @@ def excluir_usuario(id):
     flash('Usuário excluído com sucesso!', 'success')
     return redirect(url_for('listar_usuarios'))
 
-#refatorado 21: listar_usuarios()
 @app.route('/usuarios')
 @login_required
 def listar_usuarios():
@@ -633,7 +608,6 @@ def listar_usuarios():
     return render_template('usuarios.html', usuarios=usuarios, situacao=situacao, busca=busca)
 
 
-#refatorado 22: visualizar_usuario()
 @app.route('/usuario/<int:id>')
 @login_required
 def visualizar_usuario(id):
@@ -651,7 +625,6 @@ def visualizar_usuario(id):
     return render_template('visualizar_usuario.html', usuario=usuario)
 
 
-#refatorado 23: dashboard()
 @app.route('/dashboard')
 @admin_required
 def dashboard():
@@ -690,7 +663,6 @@ def dashboard():
                            ultimos_cadastros=ultimos_cadastros)
 
 
-# refatorado 24: sobre()
 @app.route('/sobre')
 def sobre():
     return render_template('sobre.html')
