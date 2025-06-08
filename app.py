@@ -427,31 +427,29 @@ def listar_feedbacks():
         feedbacks = []
     return render_template('admin/feedbacks.html', feedbacks=feedbacks, status=status)
 
+#refatorado 16: responder_feedback()
 @app.route('/admin/feedback/<int:id>/responder', methods=['POST'])
 @admin_required
 def responder_feedback(id):
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
-    resposta = request.form.get('resposta').strip()
+    resposta = request.form.get('resposta', '').strip()
     novo_status = request.form.get('status')
     if not resposta:
         flash('Por favor, escreva uma resposta', 'danger')
         return redirect(url_for('listar_feedbacks'))
     try:
-        conn = sqlite3.connect('usuarios.db')
-        cursor = conn.cursor()
-        cursor.execute('''
-            UPDATE feedbacks 
-            SET resposta = ?, status = ?
-            WHERE id = ?
-        ''', (resposta, novo_status, id))
-        conn.commit()
-        conn.close()
+        with sqlite3.connect('usuarios.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                           UPDATE feedbacks
+                           SET resposta = ?, status = ?
+                           WHERE id = ?
+                           ''', (resposta, novo_status, id))
+            conn.commit()
         flash('Resposta enviada com sucesso!', 'success')
-        return redirect(url_for('listar_feedbacks'))
     except Exception as e:
         flash(f'Erro ao responder feedback: {str(e)}', 'danger')
-        return redirect(url_for('listar_feedbacks'))
+    return redirect(url_for('listar_feedbacks'))
+
 
 @app.route('/exportar/usuarios_csv')
 def exportar_usuarios_csv():
