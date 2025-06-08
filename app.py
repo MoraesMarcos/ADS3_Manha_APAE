@@ -651,40 +651,44 @@ def visualizar_usuario(id):
     return render_template('visualizar_usuario.html', usuario=usuario)
 
 
+#refatorado 23: dashboard()
 @app.route('/dashboard')
 @admin_required
 def dashboard():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     conn = sqlite3.connect('usuarios.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
+
     cursor.execute("SELECT COUNT(*) as total FROM usuarios")
     total_usuarios = cursor.fetchone()['total']
+
     cursor.execute("SELECT COUNT(*) as ativos FROM usuarios WHERE situacao_cadastro = 'ativo'")
     ativos = cursor.fetchone()['ativos']
+
     cursor.execute("SELECT COUNT(*) as inativos FROM usuarios WHERE situacao_cadastro = 'inativo'")
     inativos = cursor.fetchone()['inativos']
+
     cursor.execute("SELECT COUNT(*) as suspensos FROM usuarios WHERE situacao_cadastro = 'suspenso'")
     suspensos = cursor.fetchone()['suspensos']
-    areas = {
-        'assistencia': 0,
-        'saude': 0,
-        'educacao': 0,
-        'social': 0
-    }
-    cursor.execute("SELECT COUNT(*) as count FROM usuarios WHERE area LIKE '%assistencia%'")
-    areas['assistencia'] = cursor.fetchone()['count']
+
+    areas = {}
+    for area in ['assistencia', 'saude', 'educacao', 'social']:
+        cursor.execute("SELECT COUNT(*) as count FROM usuarios WHERE area LIKE ?", (f'%{area}%',))
+        areas[area] = cursor.fetchone()['count']
+
     cursor.execute("SELECT nome, data_cadastro FROM usuarios ORDER BY data_cadastro DESC LIMIT 5")
     ultimos_cadastros = cursor.fetchall()
+
     conn.close()
+
     return render_template('dashboard.html',
-                          total_usuarios=total_usuarios,
-                          ativos=ativos,
-                          inativos=inativos,
-                          suspensos=suspensos,
-                          areas=areas,
-                          ultimos_cadastros=ultimos_cadastros)
+                           total_usuarios=total_usuarios,
+                           ativos=ativos,
+                           inativos=inativos,
+                           suspensos=suspensos,
+                           areas=areas,
+                           ultimos_cadastros=ultimos_cadastros)
+
 
 @app.route('/sobre')
 def sobre():
