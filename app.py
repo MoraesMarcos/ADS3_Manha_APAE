@@ -553,25 +553,28 @@ def editar_usuario(id):
 
     return render_template('editar_usuario.html', usuario=usuario)
 
+#refatorado 19: download_laudo()
 @app.route('/download/laudo/<int:user_id>')
+@login_required
 def download_laudo(user_id):
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     conn = sqlite3.connect('usuarios.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute("SELECT laudo_nome, laudo_caminho FROM usuarios WHERE id = ?", (user_id,))
     usuario = cursor.fetchone()
     conn.close()
+
     if not usuario or not usuario['laudo_caminho']:
         flash('Laudo não encontrado', 'danger')
         return redirect(url_for('visualizar_usuario', id=user_id))
+
     return send_from_directory(
         os.path.dirname(usuario['laudo_caminho']),
         os.path.basename(usuario['laudo_caminho']),
         as_attachment=True,
         download_name=usuario['laudo_nome']
     )
+
 
 @app.route('/usuario/<int:id>/excluir', methods=['POST'])
 def excluir_usuario(id):
