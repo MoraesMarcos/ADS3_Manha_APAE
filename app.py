@@ -474,13 +474,14 @@ def exportar_usuarios_csv():
     return response
 
 
+#refatorado 18: editar_usuario()
 @app.route('/usuario/<int:id>/editar', methods=['GET', 'POST'])
+@login_required
 def editar_usuario(id):
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     conn = sqlite3.connect('usuarios.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
+
     if request.method == 'POST':
         try:
             laudo_nome = ''
@@ -494,13 +495,12 @@ def editar_usuario(id):
                     file.save(filepath)
                     laudo_nome = filename
                     laudo_caminho = filepath
+
             dados = request.form.to_dict(flat=False)
             dados_limpos = {}
             for chave, valor in dados.items():
-                if isinstance(valor, list):
-                    dados_limpos[chave] = ','.join(valor)
-                else:
-                    dados_limpos[chave] = valor
+                dados_limpos[chave] = ','.join(valor) if isinstance(valor, list) else valor
+
             campos = [
                 'nome', 'nome_social', 'prontuario', 'situacao_cadastro', 'data_entrada_saida',
                 'cpf', 'rg', 'data_emissao_rg', 'cartao_nascimento', 'livro_folha', 'cartorio',
@@ -515,33 +515,42 @@ def editar_usuario(id):
                 'data_liberacao', 'uso_imagem', 'transporte_ida', 'transporte_volta',
                 'observacoes', 'notificacao_whatsapp'
             ]
+
             if laudo_nome and laudo_caminho:
                 campos.extend(['laudo_nome', 'laudo_caminho'])
+
             set_clause = ', '.join([f"{campo} = ?" for campo in campos])
             valores = [dados_limpos.get(campo, '') for campo in campos]
-            if laudo_nome and laudo_caminho:
-                valores.extend([laudo_nome, laudo_caminho])
+
+            # Não duplicar valores do laudo, pois já pegamos acima.
             valores.append(id)
+
             cursor.execute(f'''
                 UPDATE usuarios 
                 SET {set_clause}
                 WHERE id = ?
             ''', valores)
+
             conn.commit()
             conn.close()
+
             flash('Usuário atualizado com sucesso!', 'success')
             return redirect(url_for('visualizar_usuario', id=id))
+
         except Exception as e:
             conn.rollback()
             conn.close()
             flash(f'Erro ao atualizar usuário: {str(e)}', 'danger')
             return redirect(url_for('editar_usuario', id=id))
+
     cursor.execute("SELECT * FROM usuarios WHERE id = ?", (id,))
     usuario = cursor.fetchone()
     conn.close()
+
     if not usuario:
         flash('Usuário não encontrado', 'danger')
         return redirect(url_for('listar_usuarios'))
+
     return render_template('editar_usuario.html', usuario=usuario)
 
 @app.route('/download/laudo/<int:user_id>')
