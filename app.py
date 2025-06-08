@@ -405,25 +405,26 @@ def excluir_feedback(id):
         flash(f'Erro ao excluir feedback: {str(e)}', 'danger')
     return redirect(url_for('listar_feedbacks'))
 
-
+#refatorado 15: listar_feedbacks()
 @app.route('/admin/feedbacks')
 @admin_required
 def listar_feedbacks():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     status = request.args.get('status', 'pendente')
-    conn = sqlite3.connect('usuarios.db')
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-    query = "SELECT * FROM feedbacks"
-    params = []
-    if status != 'todos':
-        query += " WHERE status = ?"
-        params.append(status)
-    query += " ORDER BY data_envio DESC"
-    cursor.execute(query, params)
-    feedbacks = cursor.fetchall()
-    conn.close()
+    try:
+        with sqlite3.connect('usuarios.db') as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            query = "SELECT * FROM feedbacks"
+            params = []
+            if status != 'todos':
+                query += " WHERE status = ?"
+                params.append(status)
+            query += " ORDER BY data_envio DESC"
+            cursor.execute(query, params)
+            feedbacks = cursor.fetchall()
+    except Exception as e:
+        flash(f'Erro ao listar feedbacks: {str(e)}', 'danger')
+        feedbacks = []
     return render_template('admin/feedbacks.html', feedbacks=feedbacks, status=status)
 
 @app.route('/admin/feedback/<int:id>/responder', methods=['POST'])
