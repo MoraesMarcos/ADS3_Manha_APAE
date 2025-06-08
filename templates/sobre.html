@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Sobre a APAE{% endblock %}
+
+{% block content %}
+<div class="container my-5 text-center" style="color: #333;">
+
+<!-- Logo grande centralizada -->
+<div class="mb-4">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logotipo APAE" class="img-fluid" style="max-height: 320px;">
+</div>
+
+<!-- Texto sobre com padding e max-width -->
+<div class="mb-5 px-3 mx-auto" style="max-width: 700px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: justify;" >
+    <p>
+    A <strong>APAE</strong> (Associação de Pais e Amigos dos Excepcionais) é uma organização que atua há mais de 60 anos no apoio e defesa dos direitos das pessoas com deficiência intelectual e múltipla. Sua missão é promover a inclusão social, oferecer serviços de educação, saúde, assistência social e profissionalização, garantindo qualidade de vida e cidadania.
+    </p>
+    <p>
+    A APAE trabalha com um compromisso forte na valorização das pessoas com deficiência, buscando sua autonomia, respeito e participação ativa na sociedade. A instituição desenvolve programas e projetos que envolvem familiares, profissionais e comunidade para construir um ambiente inclusivo e acolhedor.
+    </p>
+    <p>
+    Seja bem-vindo(a) ao nosso site, onde você pode encontrar informações, serviços e formas de contribuir com essa causa tão importante.
+    </p>
+</div>
+
+<!-- Mapa com borda arredondada para ficar legal com seu design -->
+<div class="mx-auto" style="max-width: 700px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <div class="ratio ratio-16x9">
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d493.0120535037031!2d-35.59134443325838!3d-8.68237982354269!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x700a107d90ac679%3A0x885b3f2178706758!2sAPAE%20-%20Associa%C3%A7%C3%A3o%20de%20Pais%20e%20Amigos%20dos%20Excepcionais!5e0!3m2!1spt-BR!2sbr!4v1749401551291!5m2!1spt-BR!2sbr&maptype=satellite"
+        width="1000"
+        height="600"
+        style="border:0; pointer-events: none;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</div>
+
+</div>
+{% endblock %}

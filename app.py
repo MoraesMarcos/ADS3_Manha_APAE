@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory, make_response
-import pandas as pd
-from io import StringIO, BytesIO
+from io import StringIO
 import csv
 import sqlite3
 import os
@@ -36,115 +35,121 @@ def allowed_file(filename):
     return extension in ALLOWED_EXTENSIONS
 
 def criar_banco_de_dados():
-    conn = sqlite3.connect('usuarios.db')
-    cursor = conn.cursor()
+    try:
+        conn = sqlite3.connect('usuarios.db')
+        cursor = conn.cursor()
 
-    cursor.execute('''
-                   CREATE TABLE IF NOT EXISTS usuarios (
-                                                           id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                           nome TEXT NOT NULL,
-                                                           nome_social TEXT,
-                                                           prontuario TEXT,
-                                                           situacao_cadastro TEXT,
-                                                           data_entrada_saida TEXT,
-                                                           cpf TEXT,
-                                                           rg TEXT,
-                                                           data_emissao_rg TEXT,
-                                                           cartao_nascimento TEXT,
-                                                           livro_folha TEXT,
-                                                           cartorio TEXT,
-                                                           naturalidade TEXT,
-                                                           sexo TEXT,
-                                                           data_nascimento TEXT,
-                                                           ocupacao TEXT,
-                                                           carteira_pcd TEXT,
-                                                           cartao_nis TEXT,
-                                                           cartao_sus TEXT,
-                                                           raca_cor TEXT,
-                                                           mobilidade TEXT,
-                                                           tipo_deficiencia TEXT,
-                                                           transtornos TEXT,
-                                                           cid10 TEXT,
-                                                           cid10_opcional1 TEXT,
-                                                           cid10_opcional2 TEXT,
-                                                           cid11 TEXT,
-                                                           area TEXT,
-                                                           cep TEXT,
-                                                           endereco TEXT,
-                                                           numero TEXT,
-                                                           complemento TEXT,
-                                                           bairro TEXT,
-                                                           cidade TEXT,
-                                                           uf TEXT,
-                                                           email TEXT,
-                                                           telefone_residencial TEXT,
-                                                           telefone_recados TEXT,
-                                                           pessoa_contato TEXT,
-                                                           mae_nome TEXT,
-                                                           mae_cpf TEXT,
-                                                           mae_telefone TEXT,
-                                                           mae_email TEXT,
-                                                           mae_ocupacao TEXT,
-                                                           pai_nome TEXT,
-                                                           pai_cpf TEXT,
-                                                           pai_telefone TEXT,
-                                                           pai_email TEXT,
-                                                           pai_ocupacao TEXT,
-                                                           medicamento TEXT,
-                                                           qual_medicamento TEXT,
-                                                           alergia TEXT,
-                                                           qual_alergia TEXT,
-                                                           comorbidade TEXT,
-                                                           qual_comorbidade TEXT,
-                                                           convenio TEXT,
-                                                           qual_convenio TEXT,
-                                                           atividade_fisica TEXT,
-                                                           data_liberacao TEXT,
-                                                           uso_imagem TEXT,
-                                                           transporte_ida TEXT,
-                                                           transporte_volta TEXT,
-                                                           observacoes TEXT,
-                                                           notificacao_whatsapp TEXT,
-                                                           laudo_nome TEXT,
-                                                           laudo_caminho TEXT,
-                                                           data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                   )
-                   ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS usuarios (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                nome_social TEXT,
+                prontuario TEXT,
+                situacao_cadastro TEXT,
+                data_entrada_saida TEXT,
+                cpf TEXT,
+                rg TEXT,
+                data_emissao_rg TEXT,
+                cartao_nascimento TEXT,
+                livro_folha TEXT,
+                cartorio TEXT,
+                naturalidade TEXT,
+                sexo TEXT,
+                data_nascimento TEXT,
+                ocupacao TEXT,
+                carteira_pcd TEXT,
+                cartao_nis TEXT,
+                cartao_sus TEXT,
+                raca_cor TEXT,
+                mobilidade TEXT,
+                tipo_deficiencia TEXT,
+                transtornos TEXT,
+                cid10 TEXT,
+                cid10_opcional1 TEXT,
+                cid10_opcional2 TEXT,
+                cid11 TEXT,
+                area TEXT,
+                cep TEXT,
+                endereco TEXT,
+                numero TEXT,
+                complemento TEXT,
+                bairro TEXT,
+                cidade TEXT,
+                uf TEXT,
+                email TEXT,
+                telefone_residencial TEXT,
+                telefone_recados TEXT,
+                pessoa_contato TEXT,
+                mae_nome TEXT,
+                mae_cpf TEXT,
+                mae_telefone TEXT,
+                mae_email TEXT,
+                mae_ocupacao TEXT,
+                pai_nome TEXT,
+                pai_cpf TEXT,
+                pai_telefone TEXT,
+                pai_email TEXT,
+                pai_ocupacao TEXT,
+                medicamento TEXT,
+                qual_medicamento TEXT,
+                alergia TEXT,
+                qual_alergia TEXT,
+                comorbidade TEXT,
+                qual_comorbidade TEXT,
+                convenio TEXT,
+                qual_convenio TEXT,
+                atividade_fisica TEXT,
+                data_liberacao TEXT,
+                uso_imagem TEXT,
+                transporte_ida TEXT,
+                transporte_volta TEXT,
+                observacoes TEXT,
+                notificacao_whatsapp TEXT,
+                laudo_nome TEXT,
+                laudo_caminho TEXT,
+                data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
 
-    cursor.execute('''
-                   CREATE TABLE IF NOT EXISTS feedbacks (
-                                                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                            usuario_id INTEGER,
-                                                            usuario_nome TEXT,
-                                                            tipo TEXT NOT NULL,
-                                                            mensagem TEXT NOT NULL,
-                                                            data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                                                            status TEXT DEFAULT 'pendente',
-                                                            resposta TEXT,
-                                                            FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-                       )
-                   ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS feedbacks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                usuario_id INTEGER,
+                usuario_nome TEXT,
+                tipo TEXT NOT NULL,
+                mensagem TEXT NOT NULL,
+                data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                status TEXT DEFAULT 'pendente',
+                resposta TEXT,
+                FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+            )
+        ''')
 
-    cursor.execute('''
-                   CREATE TABLE IF NOT EXISTS agendamentos (
-                                                               id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                               nome TEXT NOT NULL,
-                                                               email TEXT NOT NULL,
-                                                               telefone TEXT NOT NULL,
-                                                               tipo_consulta TEXT NOT NULL,
-                                                               preferencia_data TEXT,
-                                                               preferencia_horario TEXT,
-                                                               mensagem TEXT,
-                                                               status TEXT DEFAULT 'pendente',
-                                                               data_solicitacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                                                               data_confirmacao TIMESTAMP,
-                                                               responsavel TEXT
-                   )
-                   ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS agendamentos (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                email TEXT NOT NULL,
+                telefone TEXT NOT NULL,
+                tipo_consulta TEXT NOT NULL,
+                preferencia_data TEXT,
+                preferencia_horario TEXT,
+                mensagem TEXT,
+                status TEXT DEFAULT 'pendente',
+                data_solicitacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                data_confirmacao TIMESTAMP,
+                responsavel TEXT
+            )
+        ''')
 
-    conn.commit()
-    conn.close()
-
+        conn.commit()
+        print("Banco de dados criado com sucesso.")
+    except Exception as e:
+        print(f"Erro ao criar o banco de dados: {e}")
+    finally:
+        if 'conn' in locals():
+            conn.close()
+            
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -183,10 +188,10 @@ def agendamento():
             with sqlite3.connect('usuarios.db') as conn:
                 cursor = conn.cursor()
                 cursor.execute('''
-                               INSERT INTO agendamentos
-                               (nome, email, telefone, tipo_consulta, preferencia_data, preferencia_horario, mensagem)
-                               VALUES (?, ?, ?, ?, ?, ?, ?)
-                               ''', (nome, email, telefone, tipo_consulta, preferencia_data, preferencia_horario, mensagem))
+                            INSERT INTO agendamentos
+                            (nome, email, telefone, tipo_consulta, preferencia_data, preferencia_horario, mensagem)
+                            VALUES (?, ?, ?, ?, ?, ?, ?)
+                            ''', (nome, email, telefone, tipo_consulta, preferencia_data, preferencia_horario, mensagem))
                 conn.commit()
 
             flash('Solicitação de agendamento enviada com sucesso! Entraremos em contato em breve.', 'success')
@@ -225,16 +230,16 @@ def editar_agendamento(id):
             cursor = conn.cursor()
             if novo_status == 'confirmado':
                 cursor.execute('''
-                               UPDATE agendamentos
-                               SET status = ?, responsavel = ?, data_confirmacao = CURRENT_TIMESTAMP
-                               WHERE id = ?
-                               ''', (novo_status, responsavel, id))
+                            UPDATE agendamentos
+                            SET status = ?, responsavel = ?, data_confirmacao = CURRENT_TIMESTAMP
+                            WHERE id = ?
+                            ''', (novo_status, responsavel, id))
             else:
                 cursor.execute('''
-                               UPDATE agendamentos
-                               SET status = ?, responsavel = ?, mensagem = ?
-                               WHERE id = ?
-                               ''', (novo_status, responsavel, mensagem, id))
+                            UPDATE agendamentos
+                            SET status = ?, responsavel = ?, mensagem = ?
+                            WHERE id = ?
+                            ''', (novo_status, responsavel, mensagem, id))
             conn.commit()
         flash('Agendamento atualizado com sucesso!', 'success')
     except Exception as e:
@@ -361,9 +366,9 @@ def feedback():
                 usuario_id = usuario[0] if usuario else None
 
                 cursor.execute('''
-                               INSERT INTO feedbacks (usuario_id, usuario_nome, tipo, mensagem)
-                               VALUES (?, ?, ?, ?)
-                               ''', (usuario_id, session['usuario'], tipo, mensagem))
+                            INSERT INTO feedbacks (usuario_id, usuario_nome, tipo, mensagem)
+                            VALUES (?, ?, ?, ?)
+                            ''', (usuario_id, session['usuario'], tipo, mensagem))
 
                 conn.commit()
 
@@ -421,10 +426,10 @@ def responder_feedback(id):
         with sqlite3.connect('usuarios.db') as conn:
             cursor = conn.cursor()
             cursor.execute('''
-                           UPDATE feedbacks
-                           SET resposta = ?, status = ?
-                           WHERE id = ?
-                           ''', (resposta, novo_status, id))
+                        UPDATE feedbacks
+                        SET resposta = ?, status = ?
+                        WHERE id = ?
+                        ''', (resposta, novo_status, id))
             conn.commit()
         flash('Resposta enviada com sucesso!', 'success')
     except Exception as e:
@@ -655,12 +660,12 @@ def dashboard():
     conn.close()
 
     return render_template('dashboard.html',
-                           total_usuarios=total_usuarios,
-                           ativos=ativos,
-                           inativos=inativos,
-                           suspensos=suspensos,
-                           areas=areas,
-                           ultimos_cadastros=ultimos_cadastros)
+                        total_usuarios=total_usuarios,
+                        ativos=ativos,
+                        inativos=inativos,
+                        suspensos=suspensos,
+                        areas=areas,
+                        ultimos_cadastros=ultimos_cadastros)
 
 
 @app.route('/sobre')
