@@ -451,25 +451,28 @@ def responder_feedback(id):
     return redirect(url_for('listar_feedbacks'))
 
 
+#refatorado 17: exportar_usuarios_csv()
 @app.route('/exportar/usuarios_csv')
+@login_required
 def exportar_usuarios_csv():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     conn = sqlite3.connect('usuarios.db')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM usuarios")
     usuarios = cursor.fetchall()
     colunas = [desc[0] for desc in cursor.description]
     conn.close()
+
     output = StringIO()
     writer = csv.writer(output)
     writer.writerow(colunas)
     writer.writerows(usuarios)
     output.seek(0)
+
     response = make_response(output.getvalue())
     response.headers['Content-Disposition'] = 'attachment; filename=usuarios_apae.csv'
-    response.headers['Content-type'] = 'text/csv'
+    response.headers['Content-Type'] = 'text/csv'
     return response
+
 
 @app.route('/usuario/<int:id>/editar', methods=['GET', 'POST'])
 def editar_usuario(id):
