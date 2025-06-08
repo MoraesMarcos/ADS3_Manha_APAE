@@ -1,52 +1,55 @@
+# 🧪 Testes Automatizados com Selenium – Projeto APAE
 
-# ✅ Relatório Final de Testes Automatizados — Sistema APAE
-
-**Projeto:** Sistema APAE  
-**Ferramenta:** Python + Selenium WebDriver  
-**Ambiente:** [http://localhost:5000](http://localhost:5000)  
-**Data:** 19/05/2025  
-**Testador:** Script `teste_apae_selenium.py`  
-**Navegador:** Google Chrome (v136)
+Este documento descreve os testes automatizados de interface realizados com **Selenium WebDriver** no sistema APAE. Os testes visam validar o funcionamento de funcionalidades essenciais através da automação de ações no navegador.
 
 ---
 
-## 🎯 Objetivo
+## 🔧 Ferramentas Utilizadas
 
-Garantir a funcionalidade dos principais fluxos de navegação e cadastro no sistema, validando a experiência do usuário final por meio de testes automatizados.
-
----
-
-## 🔍 Funcionalidades Testadas
-
-| Etapa | Ação Realizada | Resultado |
-|-------|----------------|-----------|
-| 1️⃣ | Acesso à página de login | ✅ Sucesso |
-| 2️⃣ | Autenticação com credenciais válidas (`admin/senha123`) | ✅ Sucesso |
-| 3️⃣ | Redirecionamento e carregamento do dashboard | ✅ Sucesso |
-| 4️⃣ | Submissão de feedback com tipo e mensagem | ✅ Sucesso |
-| 5️⃣ | Cadastro de novo usuário com nome, nascimento e ocupação | ✅ Sucesso |
+- **Python 3.11**
+- **Selenium**
+- **WebDriver Manager**
+- **Google Chrome (v137+)**
+- **VS Code**
+- **Ambiente:** [http://localhost:5000](http://localhost:5000)  
+- **Data:** 08/0562025 
 
 ---
 
-## 🖼️ Evidência Visual
+## 📋 Funcionalidades Testadas
 
-A imagem do **Painel Administrativo** confirma os cadastros:
-- **Usuário Selenium**
-- **Usuário2 Selenium**
-
-Ambos foram inseridos automaticamente e aparecem em “Últimos Cadastros”.
+| Funcionalidade         | Descrição                                                                 | Resultado |
+|------------------------|---------------------------------------------------------------------------|-----------|
+| Login                  | Acesso ao sistema com credenciais válidas                                 | ✅ Sucesso |
+| Dashboard              | Verificação de acesso à página inicial após login                         | ✅ Sucesso |
+| Envio de Feedback      | Acesso à página de feedback e envio de sugestão automática                 | ✅ Sucesso |
+| Cadastro de Usuário    | Preenchimento do formulário com dados de usuário fictício                  | ⚠️ Parcial (campos de e-mail e telefone com problemas de interação) |
+| Logout                 | Encerramento da sessão e retorno à tela de login                          | ⚠️ Não executado devido à falha anterior |
 
 ---
 
-## ✅ Conclusão
+## ⚠️ Problemas Detectados
 
-Todos os testes automatizados foram executados com êxito.  
-As principais funcionalidades do sistema estão operando corretamente em ambiente local.
+- `element not interactable`: Campo de e-mail presente no DOM, mas não interagível.
+- `not visible`: Campo de telefone residencial não visível ao WebDriver.
+- `UnexpectedAlertPresentException`: Um alerta JavaScript foi disparado (e-mail inválido), mas estava fechado no momento da captura.
+- Possível lógica dinâmica ocultando campos do formulário.
 
-O sistema está apto para:
-- Receber novos cadastros
-- Processar feedbacks
-- Autenticar administradores
-- Exibir dados no dashboard
+---
 
-> Relatório gerado automaticamente via script de testes.
+## 📝 Sugestões de Correção
+
+- Verificar se os campos do formulário estão **habilitados** e **visíveis** antes da interação.
+- Inserir `waits` adicionais para elementos que aparecem após ações do usuário (ex: seleção de sexo).
+- Validar o HTML e scripts da página de cadastro para evitar `display: none`, `readonly` ou `disabled` sem necessidade.
+
+---
+
+## ▶️ Como Executar os Testes
+
+```bash
+# Instale as dependências
+pip install selenium webdriver-manager
+
+# Execute o script de teste
+python teste_apae_selenium.py
