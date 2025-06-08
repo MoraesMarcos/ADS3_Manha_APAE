@@ -298,7 +298,7 @@ def logout():
     flash('Você saiu do sistema', 'info')
     return redirect(url_for('login'))
 
-#refatorado nn (12): cadastro()
+#refatorado 12: cadastro()
 @app.route('/cadastro', methods=['GET', 'POST'])
 @login_required
 def cadastro():
@@ -357,34 +357,41 @@ def cadastro():
 
     return render_template('cadastro.html')
 
+#refatorado 13: feedback()
 @app.route('/feedback', methods=['GET', 'POST'])
+@login_required
 def feedback():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     if request.method == 'POST':
         tipo = request.form.get('tipo')
-        mensagem = request.form.get('mensagem').strip()
+        mensagem = request.form.get('mensagem', '').strip()
+
         if not mensagem:
             flash('Por favor, escreva sua mensagem', 'danger')
             return redirect(url_for('feedback'))
+
         try:
-            conn = sqlite3.connect('usuarios.db')
-            cursor = conn.cursor()
-            cursor.execute("SELECT id FROM usuarios WHERE nome = ?", (session['nome_usuario'],))
-            usuario = cursor.fetchone()
-            usuario_id = usuario[0] if usuario else None
-            cursor.execute('''
-                INSERT INTO feedbacks (usuario_id, usuario_nome, tipo, mensagem)
-                VALUES (?, ?, ?, ?)
-            ''', (usuario_id if usuario_id else None, session['usuario'], tipo, mensagem))
-            conn.commit()
-            conn.close()
+            with sqlite3.connect('usuarios.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT id FROM usuarios WHERE nome = ?", (session['nome_usuario'],))
+                usuario = cursor.fetchone()
+                usuario_id = usuario[0] if usuario else None
+
+                cursor.execute('''
+                               INSERT INTO feedbacks (usuario_id, usuario_nome, tipo, mensagem)
+                               VALUES (?, ?, ?, ?)
+                               ''', (usuario_id, session['usuario'], tipo, mensagem))
+
+                conn.commit()
+
             flash('Feedback enviado com sucesso! Obrigado pela contribuição.', 'success')
             return redirect(url_for('home'))
+
         except Exception as e:
             flash(f'Erro ao enviar feedback: {str(e)}', 'danger')
             return redirect(url_for('feedback'))
+
     return render_template('feedback.html')
+
 
 @app.route('/admin/feedback/<int:id>/excluir', methods=['POST'])
 @admin_required
