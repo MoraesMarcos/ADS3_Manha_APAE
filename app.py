@@ -298,31 +298,30 @@ def logout():
     flash('Você saiu do sistema', 'info')
     return redirect(url_for('login'))
 
+#refatorado nn (12): cadastro()
 @app.route('/cadastro', methods=['GET', 'POST'])
 @login_required
 def cadastro():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     if request.method == 'POST':
         try:
             laudo_nome = ''
             laudo_caminho = ''
-            if 'laudo' in request.files:
-                file = request.files['laudo']
-                if file and file.filename != '' and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-                    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(filepath)
-                    laudo_nome = filename
-                    laudo_caminho = filepath
+
+            file = request.files.get('laudo')
+            if file and file.filename and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(filepath)
+                laudo_nome = filename
+                laudo_caminho = filepath
+
             dados = request.form.to_dict(flat=False)
-            dados_limpos = {}
-            for chave, valor in dados.items():
-                if isinstance(valor, list):
-                    dados_limpos[chave] = ','.join(valor)
-                else:
-                    dados_limpos[chave] = valor
+            dados_limpos = {
+                chave: ','.join(valor) if isinstance(valor, list) else valor
+                for chave, valor in dados.items()
+            }
+
             campos = [
                 'nome', 'nome_social', 'prontuario', 'situacao_cadastro', 'data_entrada_saida',
                 'cpf', 'rg', 'data_emissao_rg', 'cartao_nascimento', 'livro_folha', 'cartorio',
@@ -337,21 +336,25 @@ def cadastro():
                 'data_liberacao', 'uso_imagem', 'transporte_ida', 'transporte_volta',
                 'observacoes', 'notificacao_whatsapp', 'laudo_nome', 'laudo_caminho'
             ]
+
             valores = [dados_limpos.get(campo, '') for campo in campos[:-2]]
             valores.extend([laudo_nome, laudo_caminho])
-            conn = sqlite3.connect('usuarios.db')
-            cursor = conn.cursor()
-            cursor.execute(f'''
-                INSERT INTO usuarios ({','.join(campos)})
-                VALUES ({','.join(['?'] * len(campos))})
-            ''', valores)
-            conn.commit()
-            conn.close()
+
+            with sqlite3.connect('usuarios.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute(f'''
+                    INSERT INTO usuarios ({','.join(campos)})
+                    VALUES ({','.join(['?'] * len(campos))})
+                ''', valores)
+                conn.commit()
+
             flash('Cadastro realizado com sucesso!', 'success')
             return redirect(url_for('listar_usuarios'))
+
         except Exception as e:
             flash(f'Erro ao cadastrar: {str(e)}', 'danger')
             return redirect(url_for('cadastro'))
+
     return render_template('cadastro.html')
 
 @app.route('/feedback', methods=['GET', 'POST'])
