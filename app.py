@@ -576,24 +576,28 @@ def download_laudo(user_id):
     )
 
 
+#refatorado 20: excluir_usuario()
 @app.route('/usuario/<int:id>/excluir', methods=['POST'])
+@login_required
 def excluir_usuario(id):
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     conn = sqlite3.connect('usuarios.db')
     cursor = conn.cursor()
     cursor.execute("SELECT laudo_caminho FROM usuarios WHERE id = ?", (id,))
     usuario = cursor.fetchone()
+
     if usuario and usuario[0]:
         try:
             os.remove(usuario[0])
         except OSError:
             pass
+
     cursor.execute("DELETE FROM usuarios WHERE id = ?", (id,))
     conn.commit()
     conn.close()
+
     flash('Usuário excluído com sucesso!', 'success')
     return redirect(url_for('listar_usuarios'))
+
 
 @app.route('/usuarios')
 def listar_usuarios():
