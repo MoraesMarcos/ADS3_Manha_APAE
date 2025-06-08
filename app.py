@@ -633,20 +633,23 @@ def listar_usuarios():
     return render_template('usuarios.html', usuarios=usuarios, situacao=situacao, busca=busca)
 
 
+#refatorado 22: visualizar_usuario()
 @app.route('/usuario/<int:id>')
+@login_required
 def visualizar_usuario(id):
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     conn = sqlite3.connect('usuarios.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM usuarios WHERE id = ?", (id,))
     usuario = cursor.fetchone()
     conn.close()
+
     if not usuario:
         flash('Usuário não encontrado', 'danger')
         return redirect(url_for('listar_usuarios'))
+
     return render_template('visualizar_usuario.html', usuario=usuario)
+
 
 @app.route('/dashboard')
 @admin_required
