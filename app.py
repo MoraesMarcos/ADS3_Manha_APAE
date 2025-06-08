@@ -392,22 +392,19 @@ def feedback():
 
     return render_template('feedback.html')
 
-
+#refatorado 14: excluir_feedback()
 @app.route('/admin/feedback/<int:id>/excluir', methods=['POST'])
 @admin_required
 def excluir_feedback(id):
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
     try:
-        conn = sqlite3.connect('usuarios.db')
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM feedbacks WHERE id = ?", (id,))
-        conn.commit()
-        conn.close()
+        with sqlite3.connect('usuarios.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM feedbacks WHERE id = ?", (id,))
         flash('Feedback excluído com sucesso!', 'success')
     except Exception as e:
         flash(f'Erro ao excluir feedback: {str(e)}', 'danger')
     return redirect(url_for('listar_feedbacks'))
+
 
 @app.route('/admin/feedbacks')
 @admin_required
