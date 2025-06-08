@@ -4,6 +4,7 @@ __pycache__/
 *.pyo
 
 # Ambientes virtuais
+.idea/
 .idea
 venv/
 .env/

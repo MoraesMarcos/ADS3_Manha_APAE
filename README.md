@@ -23,7 +23,6 @@ A proposta da página é apresentar os principais serviços oferecidos pela inst
 - Bootstrap
 - Flask
 - JavaScript
-- pandas
 
 ---
 
@@ -32,18 +31,6 @@ A proposta da página é apresentar os principais serviços oferecidos pela inst
 A página foi desenvolvida com layout responsivo, se adaptando bem a celulares, tablets e computadores. Para isso, usei as classes do Bootstrap como `container`, `row`, `col-*`, `ratio`, entre outras.
 
 ---
-
-## 🆕 Melhorias já realizadas
-
-- Adaptação do conteúdo para atender melhor o público autista;
-- Redução do tamanho do vídeo incorporado, para melhor usabilidade;
-- Ajustes em colunas e layout para responsividade;
-- Escrita clara, inclusiva e afetiva nos textos;
-- Integração com Flask e estrutura de templates;
-- Página "Sobre" com logotipo centralizado e mapa.
-
----
-
 
 ## ⚙️ Como rodar o projeto localmente
 
@@ -58,15 +45,15 @@ cd ADS3_Manha_APAE
 
 2. Crie um ambiente virtual (opcional, mas recomendado):
 
-```Bash
-    python -m venv venv
-    venv\Scripts\activate
+```bash
+python -m venv venv
+venv\Scripts\activate
 ```
 
 3. Instale as dependências:
 
 ```bash
-pip install flask pandas
+pip install flask
 ```
 
 4. Execute o aplicativo:
@@ -93,7 +80,7 @@ venv\bin\activate
 3. Instale as dependências:
 
 ```bash
-pip install flask pandas
+pip install flask
 ```
 
 4. Execute o aplicativo:
