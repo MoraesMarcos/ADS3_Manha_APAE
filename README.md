@@ -3,6 +3,9 @@
 Olá! Este repositório contém o código da página inicial desenvolvida para a APAE (Associação de Pais e Amigos dos Excepcionais), com foco especial no atendimento e inclusão de pessoas com Transtorno do Espectro Autista (TEA). O projeto foi feito com muito carinho e atenção aos detalhes, buscando oferecer uma experiência acessível e informativa.
 
 ---
+## 💙 > Link do site: [CLIQUE AQUI](https://f2b35b5e-ce25-40b7-a450-42b8b587f477-00-3iaxwi619oj61.janeway.replit.dev/) < 💙
+
+---
 
 ## 🧠 Sobre o Projeto
 
