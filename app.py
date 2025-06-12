@@ -672,8 +672,11 @@ def dashboard():
 def sobre():
     return render_template('sobre.html')
 
-
-if __name__ == '__main__':
+def inicializar():
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     criar_banco_de_dados()
+
+inicializar()
+
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=81)
