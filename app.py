@@ -287,7 +287,7 @@ def logout():
     session.pop('nome_usuario', None)
     session.pop('tipo_usuario', None)
     flash('Você saiu do sistema', 'info')
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 @login_required
